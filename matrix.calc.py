@@ -1,59 +1,30 @@
 from tkinter import *
 import tkinter as tk
-from tkinter.tix import *
-from tkinter import ttk
-import tkinter.font as tkFont
+import customtkinter as ct
+
+ct.set_appearance_mode("dark")
+ct.set_default_color_theme("green")
+
+root = ct.CTk()
+root.geometry('700x400')
 
 
-root = tk.Tk()
-root.geometry('600x400')
 
 root.title('Matrix.calc')
-dr = '#BCBCEE'
-col1 = '#BCBCEE'
-#col = '#EEE8AA'
-col = '#C1C1CD'
-root['bg'] = dr
 
 
 
-
-my_canvas = tk.Canvas(root, bg=dr)
-
-frameF = Frame(width=300, height = 200, bg = dr)
-
+frameF = ct.CTkFrame(root,width=300, height = 200)
 frameF.pack(side = BOTTOM, pady = 2)
 
-my_scrollbar1 = tk.Scrollbar(root,orient = "horizontal")
-my_scrollbar1.pack(side = "bottom", fill = "x", expand = True)
-
-my_scrollbar = tk.Scrollbar(root, orient = 'vertical')
-my_scrollbar.pack(side = "right", fill = "y")
-
-
-my_canvas.pack(side = TOP,fill=BOTH, expand = True)
-
-
-
-
-
-
-frameW = tk.Frame(my_canvas,width = 1000, height = 1000, bg = dr)
-frameW.grid(column = 1)
-frame4 = tk.Frame(frameW,width = 300, height = 200,bg = dr)
+frameW = ct.CTkScrollableFrame(root)
+frameW.pack(side = TOP, fill = BOTH, expand=True)
+frame4 = ct.CTkFrame(frameW,width = 400, height = 400)
 frame4.grid(column = 0, row = 0)
-frame5 = tk.Frame(frameW,width = 200, height = 200, bg = dr)
-frame5.grid(column = 1, row = 0, padx = 12)
+frame5 = ct.CTkFrame(frameW,width = 650, height = 400)
+frame5.grid(column = 1, row = 0, padx = 12, sticky='n')
 
 
-
-
-my_canvas.configure(yscrollcommand = my_scrollbar.set, xscrollcommand = my_scrollbar1.set)
-
-my_canvas.create_window((0, 0),anchor = 'n', window = frameW)
-
-
-root['bg'] = dr
 matrix1 = []
 matrix2 = []
 catrix1 = []
@@ -61,47 +32,23 @@ catrix2 = []
 resultts = []
 resultt = []
 
-
-
-
-frame1 = Frame(frameF,width=200, height = 200, bg = dr)
-frame2 = Frame(frameF,width=200, height = 200, bg = dr)
-frame3 = Frame(frameF,width=200, height = 200, bg = dr)
+frame1 = ct.CTkFrame(frameF,width=200, height = 200)
+frame2 = ct.CTkFrame(frameF,width=200, height = 200)
+frame3 = ct.CTkFrame(frameF,width=200, height = 200)
 
 frame1.pack(side=LEFT)
 frame2.pack(side=LEFT)
 frame3.pack(side = BOTTOM)
 
-
-
-
-
-
-
-
-
-
-
-
-my_scrollbar.configure(command = my_canvas.yview)
-my_scrollbar1.configure(command = my_canvas.xview)
-
-
-
-lbls = tk.Label(frame5, text = 'Ответ:')
-lblt = tk.Label(frame4, bg = dr, text = ' ')
+lbls = ct.CTkLabel(frame5, text = 'Ответ:')
+lblt = ct.CTkLabel(frame4,text = ' ')
 lblt.grid(row=500, column = 0)
-
-
-def clickII(event, obj):
-    if obj.get() == '0':
-        obj.delete(0, END)
 
 def otvet():
         for i in range(len(resultt)):
             trs = []
             for j in range(len(resultt[0])):
-                lbl = tk.Label(frame5, text = resultt[i][j], width = 3)
+                lbl = ct.CTkLabel(frame5, text = resultt[i][j], width = 35, fg_color="gray75", corner_radius=3)
                 lbl.grid(row=i+1, column=j, padx = 1, pady = 1)
                 trs.append(lbl)
             resultts.append(trs)
@@ -178,10 +125,8 @@ def add1():
     for i in range(a):
         row = []
         for j in range(b):
-            entry = tk.Entry(frame4, width=4)
+            entry = ct.CTkEntry(frame4, width=35, placeholder_text = 0)
             entry.grid(row=i, column=j)
-            entry.insert(0, 0)
-            entry.bind("<1>", lambda event, obj=entry: clickII(event, obj))
             row.append(entry)
         matrix1.append(row)
     lbls.grid_forget()
@@ -194,11 +139,9 @@ def add2():
     for i in range(c):
         row = []
         for j in range(d):
-            entry = tk.Entry(frame4, width=4)
+            entry = ct.CTkEntry(frame4, width=35, placeholder_text = 0)
             entry.grid(row=i+1000, column=j)
-            entry.bind("<1>", lambda event, obj=entry: clickII(event, obj))
             row.append(entry)
-            entry.insert(0, 0)
         matrix2.append(row)
     lbls.grid_forget()
 def copy1():
@@ -206,7 +149,7 @@ def copy1():
     for i in range(len(resultt)):
         row = []
         for j in range(len(resultt[i])):
-            entry = tk.Entry(frame4, width=4)
+            entry = ct.CTkEntry(frame4, width=4)
             entry.grid(row=i, column=j)
             entry.bind("<1>", lambda event, obj=entry: clickII(event, obj))
             row.append(entry)
@@ -217,7 +160,7 @@ def copy2():
     for i in range(len(resultt)):
         row = []
         for j in range(len(resultt[i])):
-            entry = tk.Entry(frame4, width=4)
+            entry = ct.CTkEntry(frame4, width=4)
             entry.grid(row=i+1000, column=j)
             entry.bind("<1>", lambda event, obj=entry: clickII(event, obj))
             row.append(entry)
@@ -230,49 +173,49 @@ def callback():
     return True
 
 
-entry1 = tk.Entry(frame1, width=5)
+entry1 = ct.CTkEntry(frame1, width=30)
 entry1.grid(row = 1, column = 1, pady = 1)
 
-lble1 = tk.Label(frame1, text = 'Кол-во столбцов')
+lble1 = ct.CTkLabel(frame1, text = 'Кол-во столбцов')
 lble1.grid(row = 1, column = 2,pady = 1)
 
-entry2 = tk.Entry(frame1, width=5)
+entry2 = ct.CTkEntry(frame1, width=30)
 entry2.grid(row = 2, column = 1, pady = 1)
 
-lble2 = tk.Label(frame1, text = 'Кол-во строк')
+lble2 = ct.CTkLabel(frame1, text = 'Кол-во строк')
 lble2.grid(row = 2, column = 2, pady = 1)
 
-entry3 = tk.Entry(frame2,width=5)
+entry3 = ct.CTkEntry(frame2,width=30)
 entry3.grid(row = 1, column = 1, pady = 1)
 
-lble3 = tk.Label(frame2, text = 'Кол-во столбцов')
+lble3 = ct.CTkLabel(frame2, text = 'Кол-во столбцов')
 lble3.grid(row = 1, column = 2, pady = 1)
 
-entry4 = tk.Entry(frame2, width=5)
+entry4 = ct.CTkEntry(frame2, width=30)
 entry4.grid(row = 2, column = 1, pady = 1)
 
-lble4 = tk.Label(frame2, text = 'Кол-во строк')
+lble4 = ct.CTkLabel(frame2, text = 'Кол-во строк')
 lble4.grid(row = 2, column = 2, pady = 1)
 
-button_add1 = tk.Button(frame1, text="Добавить первую матрицу", command=add1, bg = col)
+button_add1 = ct.CTkButton(frame1, text="Добавить 1-ую матрицу", command=add1)
 button_add1.grid(row = 3, column = 1, columnspan=2, pady = 1)
 
-button_add2 = tk.Button(frame2, text="Добавить вторую матрицу", command=add2, bg = col)
-button_add2.grid(row = 3, column = 1, columnspan=2, pady = 1)
+button_add2 = ct.CTkButton(frame2, text="Добавить 2-ую матрицу", command=add2)
+button_add2.grid(row = 3, column = 1, columnspan=2, pady = 1, padx = 5)
 
-add = tk.Button(frame3, text="+", command=plus, width=5,height=1, bg = col)
+add = ct.CTkButton(frame3, text="+", command=plus, width=52,height=10)
 add.grid(row = 1, column = 1)
 
-add1 = tk.Button(frame3, text="-", command=minus, width=5,height=1, bg = col)
+add1 = ct.CTkButton(frame3, text="-", command=minus, width=52,height=10)
 add1.grid(row = 1, column = 2)
 
-add2 = tk.Button(frame3, text="*", command=matmult, width=5,height=1, bg = col)
+add2 = ct.CTkButton(frame3, text="*", command=matmult, width=52,height=10)
 add2.grid(row = 2, column = 1)
 
-button_copy1 = tk.Button(frame3, text="Результат -> 1 матрицу",command=copy1, bg = col)
+button_copy1 = ct.CTkButton(frame3, text="Результат -> 1 матрицу",command=copy1)
 button_copy1.grid(row = 1, column = 3, pady = 1, padx = 3)
 
-button_copy2 = tk.Button(frame3, text="Результат -> 2 матрицу",command=copy2, bg = col)
+button_copy2 = ct.CTkButton(frame3, text="Результат -> 2 матрицу",command=copy2)
 button_copy2.grid(row = 2, column = 3, pady = 1, padx = 3)
 
 def cleara():
@@ -298,15 +241,8 @@ def clearr():
     resultt.clear()
     catrix1.clear()
     catrix2.clear()
-add3 = tk.Button(frame3, text="Очистить", command=cleara, bg = col)
+add3 = ct.CTkButton(frame3, text="Очистить", command=cleara, width = 100)
 add3.grid(row = 3, column = 1, columnspan = 2)
 
-
-def adjust_scrollregion(event):
-    my_canvas.configure(scrollregion=my_canvas.bbox("all"))
-frameW.bind("<Configure>", adjust_scrollregion)
-my_canvas.bind("<Configure>", adjust_scrollregion)
-
 root.mainloop()
-
 
